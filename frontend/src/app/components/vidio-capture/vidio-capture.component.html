@@ -1,0 +1,26 @@
+<div id="captureContainer" style="display: flex; flex-direction: column; align-items: center; height: 320px; overflow: hidden; margin-bottom: 24px;">
+  <!-- SVG头骨形状，摄像头画面嵌入SVG内部 -->
+  <div class="camera-container" id="cameraContainer" style="margin-top: 0; display: none; width: 100%; height: 320px;">
+    <svg id="skullSvg" width="100%" height="320" viewBox="0 0 240 320" style="background: #eee; border-radius: 16px; width: 100%; height: 320px;">
+      <defs>
+        <clipPath id="skullClip">
+          <!-- 头骨轮廓路径，可根据实际美化 -->
+          <ellipse cx="120" cy="120" rx="90" ry="110" />
+        </clipPath>
+      </defs>
+      <foreignObject x="30" y="10" width="180" height="220" clip-path="url(#skullClip)">
+        <div style="width:100%;height:100%;position:relative;">
+          <video id="video" width="180" height="220" autoplay muted playsinline style="object-fit: cover; width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: none;"></video>
+          <img id="image" width="180" height="220" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;display:none;" />
+        </div>
+      </foreignObject>
+      <!-- 可在SVG上加辅助线或提示文字 -->
+      <text x="120" y="300" text-anchor="middle" font-size="18" fill="#888" id="hintmsg">请将人脸对准头骨区域</text>
+    </svg>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <!-- 单个人脸图像显示区域 -->
+    <div class="face-image-container">
+      <img id="faceImage" class="face-image" style="display: none;" />
+    </div>
+  </div>
+</div>

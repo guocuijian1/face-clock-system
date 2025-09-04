@@ -1,0 +1,18 @@
+<div class="head-width">
+  <div class="head head-width">
+    <ul class="ul">
+      <li class="li"
+          [class.active]="selectedTab === 'register'"
+          (click)="selectTab('register')"
+      >注册</li>
+      <li class="li"
+          [class.active]="selectedTab === 'attend'"
+          (click)="selectTab('attend')"
+      >签到</li>
+    </ul>
+  </div>
+  <div>
+    <router-outlet></router-outlet>
+  </div>
+</div>
+

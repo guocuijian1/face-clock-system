@@ -1,0 +1,24 @@
+<div id="registerTab">
+  <h2>人脸注册</h2>
+  <form id="registerForm" (submit)="onSubmitRegisterForm($event)">
+    <div class="row-container head-width">
+      <div>
+        <app-vidio-capture (onCaptureReady)="registerCaptureReady($event)"></app-vidio-capture>
+      </div>
+
+      <div>
+        <label for="registerName" class="label">姓名:</label>
+        <input type="text" id="registerName" name="name" required [(ngModel)]="name">
+      </div>
+
+      <div>
+        <label for="registerJobId" class="label">工号:</label>
+        <input type="text" id="registerJobId" name="job_id" required [(ngModel)]="job_id">
+      </div>
+      <button type="submit">注册</button>
+    </div>
+  </form>
+  @if (responseMessage) {
+    <app-error-message [msg]="responseMessage"></app-error-message>
+  }
+</div>

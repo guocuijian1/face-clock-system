@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.env
+venv/
+ENV/
+.env
+*.egg-info/
+
+# macOS
+.DS_Store
+
+# Node/Angular
+node_modules/
+dist/
+frontend/.angular/
+frontend/.vscode/
+
+# Logs
+*.log
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Test/Debug
+backend/debug_images/
+detected_faces/
+backend/tests/__pycache__/
+backend/tests/test_detected_faces/
+backend/backend
+
+# Misc
+*.swp
+*.bak
+
+# Environment
+frontend/src/environments/environment.*.ts
+

@@ -1,0 +1,23 @@
+.row-container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.label {
+  min-width: 60px;
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+input[type="text"],
+button[type="submit"],
+app-vidio-capture {
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+}
