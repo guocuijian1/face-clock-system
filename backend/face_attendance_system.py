@@ -4,7 +4,6 @@ import pandas as pd
 import os
 import pickle
 from datetime import datetime
-import argparse
 
 # 向量数据库文件
 VECTOR_DB_PATH = 'backend/face_vectors.pkl'
@@ -77,55 +76,3 @@ def attendance(image_path):
     else:
         df.to_csv(ATTENDANCE_CSV, mode='w', header=True, index=False)
     return {'message': f'考勤成功: {name}({job_id}) {now}'}, 200
-
-# 批量注册人脸信息
-def batch_register_images():
-    import glob
-    import re
-    image_files = glob.glob('source-pictures/*.jpg')
-    pattern = re.compile(r'^(.+)-([0-9]+)\.jpg$')
-    for img_path in image_files:
-        filename = os.path.basename(img_path)
-        match = pattern.match(filename)
-        if match:
-            name, job_id = match.groups()
-            print(f'Registering: {name} ({job_id}) from {img_path}')
-            register_face(img_path, name, job_id)
-        else:
-            print(f'Filename format not recognized: {filename}')
-
-# 示例用法：
-# 注册: register_face('person1.jpg', '张三', '1001')
-# 考勤: attendance('person1_attend.jpg')
-
-def main():
-    parser = argparse.ArgumentParser(description='人脸注册与考勤系统')
-    subparsers = parser.add_subparsers(dest='command')
-
-    register_parser = subparsers.add_parser('register', help='注册人脸')
-    register_parser.add_argument('--image-path', help='图片路径')
-    register_parser.add_argument('--name', help='姓名')
-    register_parser.add_argument('--job-id', help='工号')
-
-    attend_parser = subparsers.add_parser('attend', help='考勤')
-    attend_parser.add_argument('--image-path', help='图片路径')
-
-    batch_parser = subparsers.add_parser('batch-register', help='批量注册 source-pictures 下所有图片')
-
-    args = parser.parse_args()
-
-    if not args.command:
-        parser.print_help()
-        exit(1)
-
-    if args.command == 'register':
-        register_face(args.image_path, args.name, args.job_id)
-    elif args.command == 'attend':
-        attendance(args.image_path)
-    elif args.command == 'batch-register':
-        batch_register_images()
-
-
-
-if __name__ == '__main__':
-    main()

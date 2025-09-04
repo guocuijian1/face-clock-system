@@ -1,6 +1,8 @@
-import os
-import pickle
-import base64
+import base64, io,os,pickle
+from PIL import Image
+import numpy as np
+import face_recognition
+import datetime
 
 class ImageService:
     def __init__(self, db_path='face_vectors.pkl'):
@@ -36,7 +38,8 @@ class ImageService:
         ]
         self.current_index = 0 if self.images_meta else -1
 
-    def _load_image_from_local(self, image_url):
+    @staticmethod
+    def _load_image_from_local(image_url):
         if not image_url or not os.path.exists(image_url):
             return None
 
@@ -49,39 +52,13 @@ class ImageService:
             print(f"Error loading image from {image_url}: {e}")
             return None
 
-    def get_next_image(self):
-        if not self.images_meta:
-            return None
-
-        self.current_index = (self.current_index + 1) % len(self.images_meta)
-        return self.images_meta[self.current_index]
-
-    def get_previous_image(self):
-        if not self.images_meta:
-            return None
-
-        self.current_index = (self.current_index - 1) % len(self.images_meta)
-        return self.images_meta[self.current_index]
-
-    def get_first_image(self):
-        if not self.images_meta or self.current_index == -1:
-            return None
-
-        return self.images_meta[self.current_index]
-
-    def get_face_locations(self, base64_string):
+    @staticmethod
+    def _get_face_locations(base64_string):
         """
         检测图像中的人脸位置
         :param base64_string: base64编码的图像数据
         :return: 人脸位置列表 [(top, right, bottom, left),...]
         """
-        import base64, io
-        from PIL import Image
-        import numpy as np
-        import face_recognition
-        import os
-        import datetime
-
         # 获取当前文件所在目录
         current_dir = os.path.dirname(os.path.abspath(__file__))
         debug_dir = os.path.join(current_dir, "debug_images")
@@ -96,9 +73,7 @@ class ImageService:
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
         debug_image_path = os.path.join(debug_dir, f"debug_image_{timestamp}.png")
         image.save(debug_image_path)
-
-        print(f"Original image size: {image.size}")
-        print(f"Debug image saved to: {debug_image_path}")
+        print(f"_get_face_locations receive a image and saved to : {debug_image_path}")
 
         # 缩放
         max_size = 1024
@@ -139,17 +114,14 @@ class ImageService:
 
         return face_locations_list
 
-    def crop_and_save_face(self, base64_string, face_location):
+    @staticmethod
+    def _crop_and_save_face(base64_string, face_location):
         """
         从图像中裁剪人脸并保存
         :param base64_string: base64编码的图像数据
         :param face_location: 人脸位置 [top, right, bottom, left]
         :return: 裁剪后的人脸图像的base64编码
         """
-        import base64
-        import io
-        from PIL import Image
-
         if not face_location:
             print("No face location provided")
             return ''
