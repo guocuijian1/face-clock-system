@@ -18,37 +18,6 @@ export class VidioCaptureComponent implements OnInit {
 
   constructor(private http: HttpClient) { }
 
-  async getFaceLocations(imageData: string): Promise<any> {
-    const base64String = imageData.replace('data:image/png;base64,', '');
-
-    try {
-      const response = await fetch(`${this.apiUrl}/face_locations`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ imageData: base64String })
-      });
-
-      const result = await response.json();
-
-      if (result.status === 200) {
-        this.faceLocations = result.data.face_locations;
-        this.faceImages = result.data.face_images;
-
-        // 显示检测到的人脸
-        this.displayFaceImages();
-        return result.data;
-      } else {
-        console.error('Face detection failed:', result.message);
-        return null;
-      }
-    } catch (error) {
-      console.error('Error in face detection:', error);
-      return null;
-    }
-  }
-
   displayFaceImages() {
     const container = document.querySelector('.face-images-container');
     if (!container) return;
@@ -63,19 +32,6 @@ export class VidioCaptureComponent implements OnInit {
       img.classList.add('face-image');
       img.style.display = 'block';
       container.appendChild(img);
-    });
-  }
-
-  async loadImageAsBase64(url: string): Promise<string> {
-    const response = await fetch(url);
-    const blob = await response.blob();
-    return new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        resolve(reader.result as string);
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
     });
   }
 
@@ -99,7 +55,6 @@ export class VidioCaptureComponent implements OnInit {
     // 获取base64格式的图像数据
     const imgData = canvas.toDataURL('image/png');
     const img64 = imgData.split(',')[1];
-
 
     console.log('Image captured, size:', targetWidth, 'x', targetHeight);
 

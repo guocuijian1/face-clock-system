@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AttendComponent } from './attend.component';
+import AttendComponent from './attend.component';
 
 describe('AttendComponent', () => {
   let component: AttendComponent;
@@ -21,3 +21,4 @@ describe('AttendComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+

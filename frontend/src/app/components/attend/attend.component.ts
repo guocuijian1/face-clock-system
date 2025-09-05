@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { VidioCaptureComponent } from '../vidio-capture/vidio-capture.component';
 import { environment } from '../../../environments/environment';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
@@ -13,7 +13,7 @@ import { ResponseMessageTypeEnum } from '../../enums/response-message-type.enum'
   styleUrl: './attend.component.scss'
 })
 export default class AttendComponent {
-  responseMessage: ResponseMessage | null = null;
+  @Input() responseMessage: ResponseMessage | null = null;
   imageData: string | null = null;
 
   registerCaptureReady(imageData: string) {
