@@ -77,7 +77,7 @@ export class VideoCaptureComponent implements OnInit {
     countdownDiv.style.pointerEvents = 'none';
     countdownContainer.appendChild(countdownDiv);
 
-    for (let i = 5; i > 0; i--) {
+    for (let i = 2; i > 0; i--) {
       countdownDiv.textContent = i.toString();
       await new Promise(resolve => setTimeout(resolve, 1000));
     }
@@ -138,8 +138,25 @@ export class VideoCaptureComponent implements OnInit {
       if (canvas) canvas.style.display = 'none';
     } catch (err) {
       console.error('摄像头打开失败:', err);
-      alert('摄像头打开失败，请检查权限或设备！');
+      alert('摄像头打开失��，请检查权限或设备！');
     }
+  }
+
+  clearFaceImage(): void {
+    const faceImage = document.getElementById('faceImage') as HTMLImageElement;
+    if (faceImage) {
+      faceImage.src = '';
+      faceImage.style.display = 'none';
+    }
+    const image = document.getElementById('image') as HTMLImageElement;
+    if (image) {
+      image.src = '';
+      image.style.display = 'none';
+    }
+  }
+
+  restartVideo(): void {
+    this.handleCaptureClick();
   }
 
   ngOnInit() {

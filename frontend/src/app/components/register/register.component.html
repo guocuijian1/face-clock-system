@@ -1,6 +1,6 @@
 <div id="registerTab">
   <h2 id="title">人脸注册</h2>
-  <form id="registerForm" (submit)="onSubmitRegisterForm($event)">
+  <form id="registerForm" #registerForm="ngForm" (submit)="onSubmitRegisterForm($event)">
     <div class="row-container head-width">
       <div>
         <app-vidio-capture (onCaptureReady)="registerCaptureReady($event)"></app-vidio-capture>
@@ -8,14 +8,21 @@
 
       <div>
         <label for="registerName" class="label">姓名:</label>
-        <input type="text" id="registerName" name="name" required [(ngModel)]="name">
+        <input type="text" id="registerName" name="name" required [(ngModel)]="name" #nameRef="ngModel">
+        <div class="error" *ngIf="nameRef.invalid && (nameRef.dirty || nameRef.touched)">
+          姓名为必填项
+        </div>
       </div>
 
       <div>
         <label for="registerJobId" class="label">工号:</label>
-        <input type="text" id="registerJobId" name="job_id" required [(ngModel)]="job_id">
+        <input type="text" id="registerJobId" name="job_id" required [(ngModel)]="job_id" #jobIdRef="ngModel">
+        <div class="error" *ngIf="jobIdRef.invalid && (jobIdRef.dirty || jobIdRef.touched)">
+          工号为必填项
+        </div>
       </div>
-      <button type="submit">注册</button>
+      <button type="submit" [disabled]="registerForm['form'].invalid">注册</button>
+      <button type="button" (click)="clearForm(); $event.preventDefault();">清除</button>
     </div>
   </form>
   @if (responseMessage) {

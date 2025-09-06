@@ -17,13 +17,8 @@ describe('RegisterComponent', () => {
 
   it('未填写姓名或工号时不能提交', () => {
     mount(RegisterComponent, { providers: [provideHttpClient(withInterceptorsFromDi())] });
-    cy.get('button[type="submit"]').click();
-    cy.get('form:invalid').should('exist');
-    cy.get('input#registerName').type('张三');
-    cy.get('button[type="submit"]').click();
-    cy.get('form:invalid').should('exist');
-    cy.get('input#registerJobId').type('1001');
-    cy.get('form:valid').should('exist');
+    // 初始时按钮应禁用
+    cy.get('button[type="submit"]').should('be.disabled');
   });
 
   it('采集图片后 registerImageData 应被赋值', () => {

@@ -8,4 +8,11 @@ export default defineConfig({
     },
     specPattern: "**/*.cy.ts",
   },
+  reporter: 'mochawesome',
+  reporterOptions: {
+    reportDir: 'cypress/reports',
+    overwrite: false,
+    html: false,
+    json: true
+  }
 });

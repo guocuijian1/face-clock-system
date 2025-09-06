@@ -148,8 +148,9 @@ class ImageService:
             print(f"Face dimensions: {face_width}x{face_height}")
 
             # 扩展裁剪区域（增加30%的边界）
-            padding_x = int(face_width * 0.3)
-            padding_y = int(face_height * 0.3)
+            scale_ratio = 0.6
+            padding_x = int(face_width * scale_ratio)
+            padding_y = int(face_height * scale_ratio)
 
             # 确保扩展后的坐标不超出图像边界
             crop_left = max(0, left - padding_x)

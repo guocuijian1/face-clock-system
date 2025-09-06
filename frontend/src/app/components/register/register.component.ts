@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild, AfterViewInit} from '@angular/core';
 import {VideoCaptureComponent} from '../vidio-capture/video-capture.component';
 import {ErrorMessageComponent} from '../error-message/error-message.component';
 import {environment} from '../../../environments/environment';
@@ -14,11 +14,15 @@ import {ResponseMessageTypeEnum} from '../../enums/response-message-type.enum';
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
-export default class RegisterComponent {
+export default class RegisterComponent implements AfterViewInit {
   registerImageData: string | null = null;
   responseMessage: ResponseMessage | null = null;
   name: string = '';
   job_id: string = '';
+
+  @ViewChild(VideoCaptureComponent) videoCapture!: VideoCaptureComponent;
+
+  ngAfterViewInit(): void {}
 
   registerCaptureReady(imageData: string) {
     this.registerImageData = imageData;
@@ -80,6 +84,17 @@ export default class RegisterComponent {
         type:ResponseMessageTypeEnum.Error,
         content:err.message
       };
+    }
+  }
+
+  clearForm(): void {
+    this.name = '';
+    this.job_id = '';
+    this.registerImageData = null;
+    this.responseMessage = null;
+    if (this.videoCapture) {
+      this.videoCapture.clearFaceImage();
+      this.videoCapture.restartVideo();
     }
   }
 }

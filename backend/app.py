@@ -1,3 +1,5 @@
+from http.cookiejar import debug
+
 from flask import Flask, request, jsonify
 from face_attendance_system import register_face, attendance
 from image_service import ImageService
@@ -68,13 +70,15 @@ def get_cropped_faces():
                 'data': None
             }), 400
         #The below code is for test purpose only, you can replace it with the above code to read image from request
+        """
         current_dir = os.path.dirname(os.path.abspath(__file__))
         image_path = f"{current_dir}/tests/resources/man.png"
         with open(image_path, 'rb') as image_file:
             image_data = image_file.read()
             base64_string = base64.b64encode(image_data).decode('utf-8')
+        """
 
-        #base64_string = data['imageData']
+        base64_string = data['imageData']
 
         # 使用ImageService检测人脸位置
         face_locations_result = ImageService._get_face_locations(base64_string)
@@ -113,4 +117,4 @@ def get_cropped_faces():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=5001)
+    app.run(host='0.0.0.0',port=5000,debug=True)
