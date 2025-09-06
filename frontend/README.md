@@ -1,5 +1,11 @@
 # Frontend
 
+Before you start, please run the following command in the project root to install all dependencies:
+
+```bash
+npm install
+```
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.3.
 
 ## Development server
@@ -7,7 +13,7 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 To start a local development server, run:
 
 ```bash
-ng serve
+npm start
 ```
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
@@ -20,40 +26,68 @@ Angular CLI includes powerful code scaffolding tools. To generate a new componen
 ng generate component component-name
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+To run all Cypress component tests and generate a report, first enter the root project directory and then run:
 
 ```bash
-ng generate --help
+npm run cy:run:all
 ```
 
-## Building
+## Other Useful Commands
 
-To build the project run:
+Below are some other useful npm scripts defined in package.json:
 
-```bash
-ng build
-```
+- **npm run build**
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+  Build the project for production. Output files will be in the `dist/` directory.
+  ```bash
+  npm run build
+  ```
 
-## Running unit tests
+- **npm run watch**
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+  Continuously build the project in development mode when files change.
+  ```bash
+  npm run watch
+  ```
 
-```bash
-ng test
-```
+- **npm test**
 
-## Running end-to-end tests
+  Run unit tests using Karma.
+  ```bash
+  npm test
+  ```
 
-For end-to-end (e2e) testing, run:
+- **npm run rm-reports**
 
-```bash
-ng e2e
-```
+  Remove all Cypress test reports in `cypress/reports/`.
+  ```bash
+  npm run rm-reports
+  ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+- **npm run cy:run-ct**
 
-## Additional Resources
+  Run Cypress component tests only (without generating a report).
+  ```bash
+  npm run cy:run-ct
+  ```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- **npm run cy:report:merge**
+
+  Merge all Cypress JSON reports into a single `report.json` file.
+  ```bash
+  npm run cy:report:merge
+  ```
+
+- **npm run cy:report:html**
+
+  Generate an HTML report from the merged `report.json`.
+  ```bash
+  npm run cy:report:html
+  ```
+
+- **npm run cy:report:all**
+
+  Merge JSON reports and generate the HTML report in one step.
+  ```bash
+  npm run cy:report:all
+  ```
