@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {VidioCaptureComponent} from '../vidio-capture/vidio-capture.component';
+import {VideoCaptureComponent} from '../vidio-capture/video-capture.component';
 import {ErrorMessageComponent} from '../error-message/error-message.component';
 import {environment} from '../../../environments/environment';
 import {FormsModule} from '@angular/forms';
@@ -10,7 +10,7 @@ import {ResponseMessageTypeEnum} from '../../enums/response-message-type.enum';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [VidioCaptureComponent, ErrorMessageComponent, FormsModule],
+  imports: [VideoCaptureComponent, ErrorMessageComponent, FormsModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })

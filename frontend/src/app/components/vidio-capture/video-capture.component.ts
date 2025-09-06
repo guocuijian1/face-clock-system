@@ -6,34 +6,13 @@ import { firstValueFrom } from 'rxjs';
 @Component({
   selector: 'app-vidio-capture',
   imports: [],
-  templateUrl: './vidio-capture.component.html',
+  templateUrl: './video-capture.component.html',
   standalone: true,
-  styleUrl: './vidio-capture.component.scss'
+  styleUrl: './video-capture.component.scss'
 })
-export class VidioCaptureComponent implements OnInit {
+export class VideoCaptureComponent implements OnInit {
   @Output() onCaptureReady = new EventEmitter<string>();
-  faceLocations: Array<[number, number, number, number]> = [];
-  faceImages: string[] = [];
-  apiUrl = environment.API_BASE_URL;
-
   constructor(private http: HttpClient) { }
-
-  displayFaceImages() {
-    const container = document.querySelector('.face-images-container');
-    if (!container) return;
-
-    // 清除现有的图片
-    container.innerHTML = '';
-
-    // 显示所有检测到的人脸
-    this.faceImages.forEach((base64Image, index) => {
-      const img = document.createElement('img');
-      img.src = `data:image/png;base64,${base64Image}`;
-      img.classList.add('face-image');
-      img.style.display = 'block';
-      container.appendChild(img);
-    });
-  }
 
   async captureImage(
     video: HTMLVideoElement,

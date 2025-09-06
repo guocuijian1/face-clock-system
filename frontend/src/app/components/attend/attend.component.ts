@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { VidioCaptureComponent } from '../vidio-capture/vidio-capture.component';
+import { VideoCaptureComponent } from '../vidio-capture/video-capture.component';
 import { environment } from '../../../environments/environment';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
 import { ResponseMessage } from '../../interfaces/response-message';
@@ -8,7 +8,7 @@ import { ResponseMessageTypeEnum } from '../../enums/response-message-type.enum'
 @Component({
   selector: 'app-attend',
   standalone: true,
-  imports: [VidioCaptureComponent, ErrorMessageComponent],
+  imports: [VideoCaptureComponent, ErrorMessageComponent],
   templateUrl: './attend.component.html',
   styleUrl: './attend.component.scss'
 })

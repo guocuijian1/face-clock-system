@@ -1,21 +1,14 @@
 import AttendComponent from '../src/app/components/attend/attend.component';
 import { mount } from 'cypress/angular';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {ResponseMessageTypeEnum} from '../src/app/enums/response-message-type.enum';
 
 describe('AttendComponent', () => {
   it('should mount the component', () => {
     mount(AttendComponent, { providers: [provideHttpClient(withInterceptorsFromDi())] });
-    cy.get('h2').contains('考勤');
+    cy.get('#title').contains('考勤');
     cy.get('form#attendForm').should('exist');
-  });
-
-  it('should render the video capture component', () => {
-    mount(AttendComponent, { providers: [provideHttpClient(withInterceptorsFromDi())] });
     cy.get('app-vidio-capture').should('exist');
-  });
-
-  it('should render the submit button with correct text', () => {
-    mount(AttendComponent, { providers: [provideHttpClient(withInterceptorsFromDi())] });
     cy.get('button[type="submit"]').contains('考勤');
   });
 
@@ -23,10 +16,30 @@ describe('AttendComponent', () => {
     mount(AttendComponent, {
       providers: [provideHttpClient(withInterceptorsFromDi())],
       componentProperties: {
-        responseMessage: { type: 'error', content: 'Error occurred' }
+        responseMessage: { type: ResponseMessageTypeEnum.Error, content: 'Error occurred' }
       }
     });
     cy.get('app-error-message').should('exist').contains('Error occurred');
+  });
+
+  it('should show success message when responseMessage is set', () => {
+    mount(AttendComponent, {
+      providers: [provideHttpClient(withInterceptorsFromDi())],
+      componentProperties: {
+        responseMessage: { type: ResponseMessageTypeEnum.Success, content: 'Success occurred' }
+      }
+    });
+    cy.get('app-error-message').should('exist').contains('Success occurred');
+  });
+
+  it('should not show any message when responseMessage is not set', () => {
+    mount(AttendComponent, {
+      providers: [provideHttpClient(withInterceptorsFromDi())],
+      componentProperties: {
+        responseMessage: null
+      }
+    });
+    cy.get('app-error-message').should('not.exist');
   });
 
   it('should update imageData when registerCaptureReady is called', () => {
@@ -43,6 +56,4 @@ describe('AttendComponent', () => {
       cy.get('@submitSpy').should('have.been.called');
     });
   });
-
-  // Optionally, add a test for API call simulation with cy.stub(window, 'fetch')
 });

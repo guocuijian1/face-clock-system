@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VidioCaptureComponent } from './vidio-capture.component';
+import { VideoCaptureComponent } from './video-capture.component';
 
 describe('VidioCaptureComponent', () => {
-  let component: VidioCaptureComponent;
-  let fixture: ComponentFixture<VidioCaptureComponent>;
+  let component: VideoCaptureComponent;
+  let fixture: ComponentFixture<VideoCaptureComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VidioCaptureComponent]
+      imports: [VideoCaptureComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(VidioCaptureComponent);
+    fixture = TestBed.createComponent(VideoCaptureComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
