@@ -22,8 +22,6 @@ frontend/.vscode/
 *.log
 
 # IDE
-.idea/
-*.iml
 .vscode/
 
 # Test/Debug
@@ -39,4 +37,3 @@ backend/backend
 
 # Environment
 frontend/src/environments/environment.*.ts
-
