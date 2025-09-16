@@ -65,6 +65,7 @@ def attendance(image_path):
 
     threshold = 0.3
     if distance > threshold:
+        print(f"Expected distance <= {threshold}, but got {distance}")
         return {'error': '人脸未注册，请注册后再考勤'}, 404
 
     name = db['names'][idx]

@@ -1,10 +1,14 @@
-import {Component, ViewChild, AfterViewInit} from '@angular/core';
+import {Component, ViewChild, AfterViewInit, OnDestroy} from '@angular/core';
 import {VideoCaptureComponent} from '../vidio-capture/video-capture.component';
 import {ErrorMessageComponent} from '../error-message/error-message.component';
 import {environment} from '../../../environments/environment';
 import {FormsModule} from '@angular/forms';
 import {ResponseMessage} from '../../interfaces/response-message';
 import {ResponseMessageTypeEnum} from '../../enums/response-message-type.enum';
+import { Store } from '@ngrx/store';
+import { selectImageData } from '../../store/image-data.selectors';
+import { Observable, Subscription } from 'rxjs';
+import {clearImageData} from '../../store/image-data.actions';
 
 
 @Component({
@@ -14,18 +18,27 @@ import {ResponseMessageTypeEnum} from '../../enums/response-message-type.enum';
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
-export default class RegisterComponent implements AfterViewInit {
+export default class RegisterComponent implements OnDestroy {
   registerImageData: string | null = null;
   responseMessage: ResponseMessage | null = null;
   name: string = '';
   job_id: string = '';
+  imageData$: Observable<string | null>;
+  private imageDataSub?: Subscription;
 
   @ViewChild(VideoCaptureComponent) videoCapture!: VideoCaptureComponent;
 
-  ngAfterViewInit(): void {}
+  constructor(private readonly store: Store) {
+    this.imageData$ = this.store.select(selectImageData);
+    this.imageDataSub = this.imageData$.subscribe(data => {
+      if (data) {
+        this.registerImageData = data;
+      }
+    });
+  }
 
-  registerCaptureReady(imageData: string) {
-    this.registerImageData = imageData;
+  ngOnDestroy(): void {
+    this.imageDataSub?.unsubscribe();
   }
 
   async onSubmitRegisterForm(e: Event): Promise<void> {
@@ -76,7 +89,7 @@ export default class RegisterComponent implements AfterViewInit {
       } else {
         this.responseMessage = {
           type:ResponseMessageTypeEnum.Error,
-          content:'注册失败，请重试！'
+          content:result.error
         };
       }
     } catch (err:any) {
@@ -88,13 +101,6 @@ export default class RegisterComponent implements AfterViewInit {
   }
 
   clearForm(): void {
-    this.name = '';
-    this.job_id = '';
-    this.registerImageData = null;
-    this.responseMessage = null;
-    if (this.videoCapture) {
-      this.videoCapture.clearFaceImage();
-      this.videoCapture.restartVideo();
-    }
+    this.store.dispatch(clearImageData());
   }
 }

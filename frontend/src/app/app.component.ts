@@ -24,4 +24,11 @@ export class AppComponent implements OnInit {
     this.selectedTab = tab;
     this.router.navigate([tab]);
   }
+
+  onTabKeyDown(event: KeyboardEvent, tab: 'register' | 'attend') {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.selectTab(tab);
+    }
+  }
 }

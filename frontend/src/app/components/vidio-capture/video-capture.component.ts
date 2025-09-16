@@ -1,23 +1,43 @@
-import {Component, OnInit,Output, EventEmitter} from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
-import { firstValueFrom } from 'rxjs';
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../../environments/environment';
+import {firstValueFrom, Observable} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {clearImageData, setImageData} from '../../store/image-data.actions';
+import {selectImageData} from '../../store/image-data.selectors';
+import {AsyncPipe, NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-vidio-capture',
-  imports: [],
+  selector: 'app-video-capture',
+  imports: [
+    AsyncPipe,
+    NgClass
+  ],
   templateUrl: './video-capture.component.html',
   standalone: true,
   styleUrl: './video-capture.component.scss'
 })
-export class VideoCaptureComponent implements OnInit {
-  @Output() onCaptureReady = new EventEmitter<string>();
-  constructor(private http: HttpClient) { }
+export class VideoCaptureComponent implements AfterViewInit {
+  @ViewChild('video', { static: false }) video!: ElementRef<HTMLVideoElement>;
+  @ViewChild('canvas', { static: false }) canvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('image', { static: false }) image!: ElementRef<HTMLImageElement>;
+  @ViewChild('cameraContainer', { static: false }) cameraContainer!: ElementRef<HTMLElement>;
+
+  imageData$: Observable<string | null>;
+
+  constructor(private readonly http: HttpClient, private readonly store: Store) {
+    this.imageData$ = this.store.select(selectImageData);
+    this.imageData$.subscribe(imageData => {
+      console.log('imageData updated:', imageData);
+      if (!imageData?.trim() && this.video) {
+        this.handleCaptureClick().then(() => {});
+      }
+    });
+  }
 
   async captureImage(
     video: HTMLVideoElement,
-    canvas: HTMLCanvasElement,
-    image: HTMLImageElement
+    canvas: HTMLCanvasElement
   ): Promise<string> {
     const targetWidth = video.width || video.videoWidth;
     const targetHeight = video.height || video.videoHeight;
@@ -37,86 +57,55 @@ export class VideoCaptureComponent implements OnInit {
 
     console.log('Image captured, size:', targetWidth, 'x', targetHeight);
 
-    try {
-      const response = await firstValueFrom(
-        this.http.post<any>(`${environment.API_BASE_URL}/cropped_faces`, {
-          imageData: img64  // 只发送base64数据部分
-        })
-      );
-      // 处理后端返回的数据结构
-      if (response && response.status === 200) {
-        const faceImageBase64 = response.data.face_image;
-        console.log('Face image (base64):', faceImageBase64);
-
-        image.src = `data:image/png;base64,${faceImageBase64}`;
-        image.style.display = 'block';
-
-        return faceImageBase64;
+    return firstValueFrom(
+      this.http.post<any>(`${environment.API_BASE_URL}/cropped_faces`, {
+        imageData: img64  // 只发送base64���据部分
+      })
+    ).then(response => {
+      if (response?.status === 200) {
+        // 不再直接设置 image.src，由 NgRx 状态驱动
+        return response.data.face_image;
       } else {
         console.error('后端返回异常:', response);
         return '';
       }
-    } catch (error) {
+    }).catch(error => {
       console.error('请求cropped_faces接口失败:', error);
-      image.src = imgData;
-      image.style.display = 'block';
-      return '';
-    }
+      // 失败时返回原始 img64
+      return img64;
+    });
   }
 
   async showCountDownAnimation(countdownContainer: HTMLElement): Promise<void> {
     const countdownDiv = document.createElement('div');
-    countdownDiv.style.position = 'absolute';
-    countdownDiv.style.top = '50%';
-    countdownDiv.style.left = '50%';
-    countdownDiv.style.transform = 'translate(-50%, -50%)';
-    countdownDiv.style.fontSize = '48px';
-    countdownDiv.style.color = 'white';
-    countdownDiv.style.textShadow = '2px 2px 4px rgba(0, 0, 0, 0.7)';
-    countdownDiv.style.zIndex = '10';
-    countdownDiv.style.pointerEvents = 'none';
+    countdownDiv.className = 'countdown-style';
     countdownContainer.appendChild(countdownDiv);
 
     for (let i = 2; i > 0; i--) {
       countdownDiv.textContent = i.toString();
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise<void>((resolve: () => void) => setTimeout(resolve, 1000));
     }
 
     countdownDiv.remove();
   }
 
-
   async handleCaptureClick(): Promise<void> {
+    let mediaStream: MediaStream | null = null;
     try {
-      const video = document.getElementById('video') as HTMLVideoElement;
-      const canvas = document.getElementById('canvas') as HTMLCanvasElement;
-      const image = document.getElementById('image') as HTMLImageElement;
-      const cameraContainer = document.getElementById('cameraContainer') as HTMLElement;
-      cameraContainer.style.display = 'block';
-      cameraContainer.style.width = '100%';
-      cameraContainer.style.height = '320px';
-      cameraContainer.style.position = 'relative';
-      video.style.display = 'block';
-      video.style.width = '100%';
-      video.style.height = '100%';
-      video.style.objectFit = 'cover';
-      video.setAttribute('autoplay', 'true');
-      video.setAttribute('muted', 'true');
-      video.setAttribute('playsinline', 'true');
-      if (canvas) {
-        canvas.style.display = 'block';
-        canvas.width = 320;
-        canvas.height = 240;
+      const video = this.video.nativeElement;
+      const canvas = this.canvas.nativeElement;
+      const cameraContainer = this.cameraContainer.nativeElement;
+
+      // 打开摄像头
+      try {
+        mediaStream = await navigator.mediaDevices.getUserMedia({video: true});
+      } catch (mediaErr) {
+        console.error('getUserMedia失败:', mediaErr);
+        alert('无法访问摄像头，请检查浏��器权限设置或设备是否连接。');
+        return;
       }
-      if (image) {
-        image.style.display = 'none';
-        image.style.width = '100%';
-        image.style.height = '100%';
-        image.style.objectFit = 'contain';
-      }
-      console.log('打开摄像头...');
-      video.srcObject = await navigator.mediaDevices.getUserMedia({video: true});
-      await new Promise<void>(resolve => {
+      video.srcObject = mediaStream;
+      await new Promise<void>((resolve: () => void) => {
         video.onloadedmetadata = () => {
           video.play();
           resolve();
@@ -125,41 +114,27 @@ export class VideoCaptureComponent implements OnInit {
       console.log('摄像头已打开，画面应显示在SVG头骨区域');
       await this.showCountDownAnimation(cameraContainer);
       let imgData: string | null = null;
-      if (image) {
-        imgData = await this.captureImage(video, canvas, image);
-        image.style.display = 'block';
-        this.onCaptureReady.emit(imgData);
-      }
-      if (video.srcObject) {
-        (video.srcObject as MediaStream).getTracks().forEach(track => track.stop());
+      imgData = await this.captureImage(video, canvas);
+      let img64 = imgData?.trim() ? `data:image/png;base64,${imgData}`: '';
+      this.store.dispatch(setImageData({ imageData: img64 }));
+      if (mediaStream) {
+        mediaStream.getTracks().forEach(track => track.stop());
         video.srcObject = null;
       }
-      video.style.display = 'none';
-      if (canvas) canvas.style.display = 'none';
     } catch (err) {
       console.error('摄像头打开失败:', err);
-      alert('摄像头打开失��，请检查权限或设备！');
+      alert('摄像头打开失败，请检查权限或设备！');
     }
   }
 
   clearFaceImage(): void {
-    const faceImage = document.getElementById('faceImage') as HTMLImageElement;
-    if (faceImage) {
-      faceImage.src = '';
-      faceImage.style.display = 'none';
-    }
-    const image = document.getElementById('image') as HTMLImageElement;
-    if (image) {
-      image.src = '';
-      image.style.display = 'none';
-    }
+    this.store.dispatch(clearImageData());
   }
 
-  restartVideo(): void {
-    this.handleCaptureClick();
-  }
 
-  ngOnInit() {
-    this.handleCaptureClick().then(() => {});
+  ngAfterViewInit(): void {
+    if (this.video) {
+      this.handleCaptureClick().then(() => {});
+    }
   }
 }

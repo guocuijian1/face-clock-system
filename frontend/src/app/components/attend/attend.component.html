@@ -4,9 +4,10 @@
   <form id="attendForm" (submit)="onSubmitAttendForm($event)">
     <div class="row-container head-width">
       <div>
-        <app-vidio-capture (onCaptureReady)="registerCaptureReady($event)"></app-vidio-capture>
+        <app-video-capture></app-video-capture>
       </div>
       <button type="submit">考勤</button>
+      <button type="button" (click)="clear()">清除</button>
     </div>
   </form>
   @if (responseMessage) {

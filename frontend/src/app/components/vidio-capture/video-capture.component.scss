@@ -1,3 +1,19 @@
+.capture-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 320px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.camera-container {
+  display: block;
+  width: 100%;
+  height: 320px;
+  position: relative;
+}
+
 .face-images-container {
   position: absolute;
   bottom: 10px;
@@ -15,4 +31,54 @@
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   display: none; /* 初始隐藏,检测到人脸后显示 */
+}
+
+.video-size {
+  width: 180px;
+  height: 220px;
+}
+
+
+.video-active {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.video-hidden {
+  display: none !important;
+}
+
+.canvas-active {
+  display: block !important;
+  width: 320px !important;
+  height: 240px !important;
+}
+
+.image-hidden {
+  display: none !important;
+}
+
+.image-active {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.canvas-hidden {
+  display: none !important;
+}
+
+.countdown-style {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 48px;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  z-index: 10;
+  pointer-events: none;
 }

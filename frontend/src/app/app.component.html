@@ -4,10 +4,12 @@
       <li class="li"
           [class.active]="selectedTab === 'register'"
           (click)="selectTab('register')"
+          (keydown)="onTabKeyDown($event, 'register')"
       >注册</li>
       <li class="li"
           [class.active]="selectedTab === 'attend'"
           (click)="selectTab('attend')"
+          (keydown)="onTabKeyDown($event, 'attend')"
       >签到</li>
     </ul>
   </div>
@@ -15,4 +17,3 @@
     <router-outlet></router-outlet>
   </div>
 </div>
-
