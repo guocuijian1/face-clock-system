@@ -1,7 +1,9 @@
 import {ResponseMessageTypeEnum} from '../enums/response-message-type.enum';
 
-export interface ResponseMessage {
+export interface ResponseMessageInterface {
   type: ResponseMessageTypeEnum;
   content: string;
 }
+
+
 

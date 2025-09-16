@@ -1,23 +1,23 @@
 import { Component, OnDestroy } from '@angular/core';
 import { VideoCaptureComponent } from '../vidio-capture/video-capture.component';
 import { environment } from '../../../environments/environment';
-import { ErrorMessageComponent } from '../error-message/error-message.component';
-import { ResponseMessage } from '../../interfaces/response-message';
+import { MessageComponent } from '../message/message.component';
+import { ResponseMessageInterface } from '../../interfaces/response-message-interface';
 import { ResponseMessageTypeEnum } from '../../enums/response-message-type.enum';
 import { Store } from '@ngrx/store';
-import { selectImageData } from '../../store/image-data.selectors';
-import { clearImageData } from '../../store/image-data.actions';
+import { selectImageData } from '../../store/image-data/image-data.selectors';
+import { clearImageData } from '../../store/image-data/image-data.actions';
 import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-attend',
   standalone: true,
-  imports: [VideoCaptureComponent, ErrorMessageComponent],
+  imports: [VideoCaptureComponent, MessageComponent],
   templateUrl: './attend.component.html',
   styleUrl: './attend.component.scss'
 })
 export default class AttendComponent implements OnDestroy {
-  responseMessage: ResponseMessage | null = null;
+  responseMessage: ResponseMessageInterface | null = null;
   imageData$: Observable<string | null>;
   registeredImageData: string | null = null;
   private readonly imageDataSub?: Subscription;

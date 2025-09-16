@@ -2,7 +2,6 @@ import base64, io,os,pickle
 from PIL import Image
 import numpy as np
 import face_recognition
-import datetime
 
 class ImageService:
     def __init__(self, db_path='face_vectors.pkl'):
@@ -32,14 +31,14 @@ class ImageService:
                 'index': idx,
                 'name': name,
                 'job_id': job_id,
-                'image_binary': self._load_image_from_local(image_url)
+                'image_binary': self.load_image_from_local(image_url)
             }
             for idx, (name, job_id, image_url) in enumerate(zip(db['names'], db['job_ids'], db['image_urls']))
         ]
         self.current_index = 0 if self.images_meta else -1
 
     @staticmethod
-    def _load_image_from_local(image_url):
+    def load_image_from_local(image_url):
         if not image_url or not os.path.exists(image_url):
             return None
 
@@ -53,7 +52,7 @@ class ImageService:
             return None
 
     @staticmethod
-    def _get_face_locations(base64_string):
+    def get_face_locations(base64_string):
         """
         检测图像中的人脸位置
         :param base64_string: base64编码的图像数据
@@ -69,9 +68,7 @@ class ImageService:
         image_data = base64.b64decode(base64_string)
         image = Image.open(io.BytesIO(image_data))
 
-        # Save image for debugging with timestamp
-        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        debug_image_path = os.path.join(debug_dir, f"debug_image_{timestamp}.png")
+        debug_image_path = os.path.join(debug_dir, "original_image.png")
         image.save(debug_image_path)
         print(f"_get_face_locations receive a image and saved to : {debug_image_path}")
 
@@ -115,7 +112,7 @@ class ImageService:
         return face_locations_list
 
     @staticmethod
-    def _crop_and_save_face(base64_string, face_location):
+    def crop_and_save_face(base64_string, face_location):
         """
         从图像中裁剪人脸并保存
         :param base64_string: base64编码的图像数据

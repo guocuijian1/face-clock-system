@@ -1,26 +1,26 @@
-import {Component, ViewChild, AfterViewInit, OnDestroy} from '@angular/core';
+import {Component, ViewChild, OnDestroy} from '@angular/core';
 import {VideoCaptureComponent} from '../vidio-capture/video-capture.component';
-import {ErrorMessageComponent} from '../error-message/error-message.component';
+import {MessageComponent} from '../message/message.component';
 import {environment} from '../../../environments/environment';
 import {FormsModule} from '@angular/forms';
-import {ResponseMessage} from '../../interfaces/response-message';
+import {ResponseMessageInterface} from '../../interfaces/response-message-interface';
 import {ResponseMessageTypeEnum} from '../../enums/response-message-type.enum';
 import { Store } from '@ngrx/store';
-import { selectImageData } from '../../store/image-data.selectors';
+import { selectImageData } from '../../store/image-data/image-data.selectors';
 import { Observable, Subscription } from 'rxjs';
-import {clearImageData} from '../../store/image-data.actions';
+import {clearImageData} from '../../store/image-data/image-data.actions';
 
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [VideoCaptureComponent, ErrorMessageComponent, FormsModule],
+  imports: [VideoCaptureComponent, MessageComponent, FormsModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
 export default class RegisterComponent implements OnDestroy {
   registerImageData: string | null = null;
-  responseMessage: ResponseMessage | null = null;
+  responseMessage: ResponseMessageInterface | null = null;
   name: string = '';
   job_id: string = '';
   imageData$: Observable<string | null>;

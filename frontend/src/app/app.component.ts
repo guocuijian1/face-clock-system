@@ -11,7 +11,7 @@ import { RouterOutlet, Router } from '@angular/router';
 export class AppComponent implements OnInit {
   selectedTab: 'register' | 'attend' = 'register';
 
-  constructor(private router: Router) {}
+  constructor(private readonly router: Router) {}
 
   ngOnInit() {
     if (this.router.url !== '/register') {
@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
 
   selectTab(tab: 'register' | 'attend') {
     this.selectedTab = tab;
-    this.router.navigate([tab]);
+    this.router.navigate([tab]).then(r => {});
   }
 
   onTabKeyDown(event: KeyboardEvent, tab: 'register' | 'attend') {

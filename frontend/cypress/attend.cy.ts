@@ -19,7 +19,7 @@ describe('AttendComponent', () => {
         responseMessage: { type: ResponseMessageTypeEnum.Error, content: 'Error occurred' }
       }
     });
-    cy.get('app-error-message').should('exist').contains('Error occurred');
+    cy.get('app-message').should('exist').contains('Error occurred');
   });
 
   it('should show success message when responseMessage is set', () => {
@@ -29,7 +29,7 @@ describe('AttendComponent', () => {
         responseMessage: { type: ResponseMessageTypeEnum.Success, content: 'Success occurred' }
       }
     });
-    cy.get('app-error-message').should('exist').contains('Success occurred');
+    cy.get('app-message').should('exist').contains('Success occurred');
   });
 
   it('should not show any message when responseMessage is not set', () => {
@@ -39,7 +39,7 @@ describe('AttendComponent', () => {
         responseMessage: null
       }
     });
-    cy.get('app-error-message').should('not.exist');
+    cy.get('app-message').should('not.exist');
   });
 
   it('should update imageData when registerCaptureReady is called', () => {
