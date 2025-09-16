@@ -8,10 +8,20 @@
 }
 
 .camera-container {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 320px;
   position: relative;
+  background: #eee;
+  border-radius: 16px;
+
+  &:hover .close-btn {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 
 .face-images-container {
@@ -40,35 +50,37 @@
 
 
 .video-active {
-  display: block !important;
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: auto;
 }
 
 .video-hidden {
-  display: none !important;
+  display: none;
 }
 
 .canvas-active {
-  display: block !important;
-  width: 320px !important;
-  height: 240px !important;
+  display: block;
+  width: 320px;
+  height: 240px;
 }
 
 .image-hidden {
-  display: none !important;
+  display: none;
 }
 
 .image-active {
-  display: block !important;
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: auto;
 }
 
 .canvas-hidden {
-  display: none !important;
+  display: none;
 }
 
 .countdown-style {
@@ -80,5 +92,58 @@
   color: white;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
   z-index: 10;
+  pointer-events: none;
+}
+
+.match-parent {
+  width: 100%;
+  height: 100%;
+}
+
+.ellipse-clip {
+  clip-path: ellipse(90px 110px at 50% 50%);
+  overflow: hidden;
+  width: 180px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: rgba(0,0,0,0.3);
+  color: #fff;
+  font-size: 22px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, opacity 0.2s;
+  opacity: 0;
+  pointer-events: none;
+}
+.close-btn:hover {
+  background: rgba(0,0,0,0.6);
+}
+
+.hint-text {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  width: 180px;
+  text-align: center;
+  font-size: 18px;
+  color: #888;
+  text-shadow: 0 1px 4px #fff, 0 1px 8px #eee;
+  z-index: 20;
   pointer-events: none;
 }

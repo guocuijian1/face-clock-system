@@ -19,7 +19,6 @@ import {AsyncPipe, NgClass } from '@angular/common';
 })
 export class VideoCaptureComponent implements AfterViewInit {
   @ViewChild('video', { static: false }) video!: ElementRef<HTMLVideoElement>;
-  @ViewChild('canvas', { static: false }) canvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild('image', { static: false }) image!: ElementRef<HTMLImageElement>;
   @ViewChild('cameraContainer', { static: false }) cameraContainer!: ElementRef<HTMLElement>;
 
@@ -37,8 +36,8 @@ export class VideoCaptureComponent implements AfterViewInit {
 
   async captureImage(
     video: HTMLVideoElement,
-    canvas: HTMLCanvasElement
   ): Promise<string> {
+    const canvas = document.createElement('canvas');
     const targetWidth = video.width || video.videoWidth;
     const targetHeight = video.height || video.videoHeight;
     canvas.width = targetWidth;
@@ -47,19 +46,15 @@ export class VideoCaptureComponent implements AfterViewInit {
     if (!context) {
       throw new Error('无法获取canvas上下文');
     }
-
-    // 确保视频帧被正确绘制
+    // 直接拉伸绘制到目标区域
     context.drawImage(video, 0, 0, targetWidth, targetHeight);
-
     // 获取base64格式的图像数据
     const imgData = canvas.toDataURL('image/png');
     const img64 = imgData.split(',')[1];
-
     console.log('Image captured, size:', targetWidth, 'x', targetHeight);
-
     return firstValueFrom(
       this.http.post<any>(`${environment.API_BASE_URL}/cropped_faces`, {
-        imageData: img64  // 只发送base64���据部分
+        imageData: img64  // 只发送base64数据部分
       })
     ).then(response => {
       if (response?.status === 200) {
@@ -93,7 +88,6 @@ export class VideoCaptureComponent implements AfterViewInit {
     let mediaStream: MediaStream | null = null;
     try {
       const video = this.video.nativeElement;
-      const canvas = this.canvas.nativeElement;
       const cameraContainer = this.cameraContainer.nativeElement;
 
       // 打开摄像头
@@ -113,8 +107,8 @@ export class VideoCaptureComponent implements AfterViewInit {
       });
       console.log('摄像头已打开，画面应显示在SVG头骨区域');
       await this.showCountDownAnimation(cameraContainer);
-      let imgData: string | null = null;
-      imgData = await this.captureImage(video, canvas);
+      let imgData: string | null;
+      imgData = await this.captureImage(video);
       let img64 = imgData?.trim() ? `data:image/png;base64,${imgData}`: '';
       this.store.dispatch(setImageData({ imageData: img64 }));
       if (mediaStream) {
@@ -127,10 +121,9 @@ export class VideoCaptureComponent implements AfterViewInit {
     }
   }
 
-  clearFaceImage(): void {
+  onClose(): void {
     this.store.dispatch(clearImageData());
   }
-
 
   ngAfterViewInit(): void {
     if (this.video) {
