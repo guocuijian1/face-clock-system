@@ -4,6 +4,7 @@ import pandas as pd
 import os
 import pickle
 from datetime import datetime
+from response_model import ResponseModel
 
 # 向量数据库文件
 VECTOR_DB_PATH = 'backend/face_vectors.pkl'
@@ -11,14 +12,14 @@ VECTOR_DB_PATH = 'backend/face_vectors.pkl'
 ATTENDANCE_CSV = 'backend/attendance.csv'
 
 # 注册人脸信息
-def register_face(image_path, name, job_id, image_url=None):
+def register_face(image_path, name, job_id, image_url=None) -> ResponseModel:
     # 尝试加载现有的数据库，如果不存在则初始化一个新的
     if os.path.exists(VECTOR_DB_PATH):
         with open(VECTOR_DB_PATH, 'rb') as f:
             db = pickle.load(f)
             job_ids = db.get('job_ids', [])
             if job_id in job_ids:
-                return {'error': f'工号 {job_id} 已存在，请使用不同的工号'}, 400
+                return ResponseModel(status=400, message=f'工号 {job_id} 已存在，请使用不同的工号', data=None)
     else:
         os.makedirs(os.path.dirname(VECTOR_DB_PATH), exist_ok=True)
         # 数据库文件不存在时，创建一个新的数据库并保存
@@ -30,7 +31,7 @@ def register_face(image_path, name, job_id, image_url=None):
     image = face_recognition.load_image_file(image_path)
     encodings = face_recognition.face_encodings(image)
     if not encodings:
-        return {'error': '没有检测到人脸'}, 400
+        return ResponseModel(status=400, message='没有检测到人脸', data=None)
     face_vector = encodings[0]
 
     # 向数据库添加新条目
@@ -45,18 +46,18 @@ def register_face(image_path, name, job_id, image_url=None):
 
     formatted_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     print({'message': f'注册成功: {name}({job_id}) {formatted_time}'})
-    return {'message': f'注册成功: {name}({job_id}) {formatted_time}'}, 200
+    return ResponseModel(status=200, message=f'注册成功: {name}({job_id}) {formatted_time}', data=None)
 
 # 查找人脸并考勤
-def attendance(image_path):
+def attendance(image_path) -> ResponseModel:
     if not os.path.exists(VECTOR_DB_PATH):
-        return {'error': '人脸未注册，请注册后再考勤'}, 400
+        return ResponseModel(status=400, message='人脸未注册，请注册后再考勤', data=None)
     with open(VECTOR_DB_PATH, 'rb') as f:
         db = pickle.load(f)
     image = face_recognition.load_image_file(image_path)
     encodings = face_recognition.face_encodings(image)
     if not encodings:
-        return {'error': '没有检测到人脸'}, 400
+        return ResponseModel(status=400, message='没有检测到人脸', data=None)
     face_vector = encodings[0].astype('float32')
 
     distances = face_recognition.face_distance(db['vectors'], face_vector)
@@ -66,7 +67,7 @@ def attendance(image_path):
     threshold = 0.3
     if distance > threshold:
         print(f"Expected distance <= {threshold}, but got {distance}")
-        return {'error': '人脸未注册，请注册后再考勤'}, 404
+        return ResponseModel(status=404, message='人脸未注册，请注册后再考勤', data=None)
 
     name = db['names'][idx]
     job_id = db['job_ids'][idx]
@@ -76,4 +77,4 @@ def attendance(image_path):
         df.to_csv(ATTENDANCE_CSV, mode='a', header=False, index=False)
     else:
         df.to_csv(ATTENDANCE_CSV, mode='w', header=True, index=False)
-    return {'message': f'考勤成功: {name}({job_id}) {now}'}, 200
+    return ResponseModel(status=200, message=f'考勤成功: {name}({job_id}) {now}', data=None)

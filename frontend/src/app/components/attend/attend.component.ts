@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { selectImageData } from '../../store/image-data/image-data.selectors';
 import { clearImageData } from '../../store/image-data/image-data.actions';
 import { Observable, Subscription } from 'rxjs';
+import {ResponseModel} from '../../rest-template/response-model';
 
 @Component({
   selector: 'app-attend',
@@ -39,7 +40,7 @@ export default class AttendComponent implements OnDestroy {
     this.imageDataSub?.unsubscribe();
   }
 
-  onSubmitAttendForm(e: Event): void {
+  async onSubmitAttendForm(e: Event) {
     e.preventDefault();
     if (!this.registeredImageData) {
       this.responseMessage = {
@@ -50,22 +51,30 @@ export default class AttendComponent implements OnDestroy {
     }
     const formData = new FormData();
     formData.append('image_path', this.registeredImageData);
-    fetch(`${environment.API_BASE_URL}/attend`, {
-      method: 'POST',
-      body: formData
-    })
-      .then(res => res.json().then(result => {
+    try {
+      const res: Response = await fetch(`${environment.API_BASE_URL}/attend`, {
+        method: 'POST',
+        body: formData
+      });
+      const status = res.status;
+      const result: ResponseModel = await res.json();
+      if (status === 200 && result.message) {
         this.responseMessage = {
-          type: res.ok ? ResponseMessageTypeEnum.Success : ResponseMessageTypeEnum.Error,
-          content: result.message || result.error || ''
+          type: ResponseMessageTypeEnum.Success,
+          content: result.message
         };
-      }))
-      .catch(() => {
+      } else {
         this.responseMessage = {
           type: ResponseMessageTypeEnum.Error,
-          content: '签到失败，请重试！'
+          content: result.message || '未知错误'
         };
-      });
+      }
+    } catch (err: any) {
+      this.responseMessage = {
+        type: ResponseMessageTypeEnum.Error,
+        content: err.message
+      };
+    }
   }
 
   clear() {

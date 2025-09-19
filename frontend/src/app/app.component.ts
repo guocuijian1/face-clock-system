@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     if (this.router.url !== '/register') {
       this.selectedTab = 'register';
-      this.router.navigate(['register']);
+      this.router.navigate(['register']).then(r => {});
     }
   }
 

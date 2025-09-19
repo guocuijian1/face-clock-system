@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import { selectImageData } from '../../store/image-data/image-data.selectors';
 import { Observable, Subscription } from 'rxjs';
 import {clearImageData} from '../../store/image-data/image-data.actions';
+import {ResponseModel} from '../../rest-template/response-model';
 
 
 @Component({
@@ -24,7 +25,7 @@ export default class RegisterComponent implements OnDestroy {
   name: string = '';
   job_id: string = '';
   imageData$: Observable<string | null>;
-  private imageDataSub?: Subscription;
+  private readonly imageDataSub?: Subscription;
 
   @ViewChild(VideoCaptureComponent) videoCapture!: VideoCaptureComponent;
 
@@ -64,12 +65,12 @@ export default class RegisterComponent implements OnDestroy {
         for (let i = 0; i < n; i++) u8arr[i] = bstr.charCodeAt(i);
         const imageBlob = new Blob([u8arr], { type: 'image/png' });
         formData.append('image_path', imageBlob, 'captured.png');
-      } catch (err) {
+      } catch (err:any) {
         this.responseMessage = {
           type:ResponseMessageTypeEnum.Error,
           content:'图片base64解码失败'
         }
-        return;
+        console.log(err.error.message);
       }
     }
 
@@ -79,9 +80,8 @@ export default class RegisterComponent implements OnDestroy {
         body: formData
       });
       const status = res.status;
-      const result = await res.json();
+      const result:ResponseModel = await res.json();
       if (status === 200 && result.message) {
-        //.this.responseMessage = result.message;
         this.responseMessage = {
           type:ResponseMessageTypeEnum.Success,
           content:result.message
@@ -89,7 +89,7 @@ export default class RegisterComponent implements OnDestroy {
       } else {
         this.responseMessage = {
           type:ResponseMessageTypeEnum.Error,
-          content:result.error
+          content:result.message
         };
       }
     } catch (err:any) {

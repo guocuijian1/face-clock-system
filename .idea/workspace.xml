@@ -4,34 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="384a926d-ab46-46ef-86ec-66b71bfa522b" name="更改" comment="remove foreign object">
+    <list default="true" id="384a926d-ab46-46ef-86ec-66b71bfa522b" name="更改" comment="refactor code">
+      <change afterPath="$PROJECT_DIR$/backend/response_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/app/rest-template/response-model.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/image_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/image_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/cypress/attend.cy.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/cypress/attend.cy.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/cypress/error-message.cy.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/cypress/message.cy.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/face_attendance_system.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/face_attendance_system.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/app.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/components/attend/attend.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/components/attend/attend.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/components/attend/attend.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/components/attend/attend.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/components/error-message/error-message.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/components/message/message.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/components/error-message/error-message.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/components/message/message.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/components/error-message/error-message.component.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/components/message/message.component.spec.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/components/error-message/error-message.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/components/message/message.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/components/register/register.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/components/register/register.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/components/register/register.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/components/register/register.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/components/vidio-capture/video-capture.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/components/vidio-capture/video-capture.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/components/vidio-capture/video-capture.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/components/vidio-capture/video-capture.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/interfaces/response-message.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/interfaces/response-message-interface.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/store/image-data.actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/store/image-data/image-data.actions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/store/image-data.reducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/store/image-data/image-data.reducer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/store/image-data.selectors.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/store/image-data/image-data.selectors.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/store/image-data.state.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/store/image-data/image-data.state.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="FlaskConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform)); sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo, NoAppException&#10;for module in [&quot;main.py&quot;, &quot;wsgi.py&quot;, &quot;app.py&quot;]:&#10;    try: locals().update(ScriptInfo(app_import_path=module, create_app=None).load_app().make_shell_context()); print(&quot;\nFlask App: %s&quot; % app.import_name); break&#10;    except NoAppException: pass">
     <envs>
@@ -146,6 +141,8 @@
       <workItem from="1757656205438" duration="5271000" />
       <workItem from="1757898831716" duration="9281000" />
       <workItem from="1757985687737" duration="20724000" />
+      <workItem from="1758089774834" duration="10097000" />
+      <workItem from="1758244948214" duration="7929000" />
     </task>
     <task id="LOCAL-00001" summary="add git configuraton file">
       <option name="closed" value="true" />
@@ -183,7 +180,18 @@
     <MESSAGE value="remove foreign object" />
     <option name="LAST_COMMIT_MESSAGE" value="remove foreign object" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/backend/app.py</url>
+          <line>68</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/face_clock_system$app.coverage" NAME="app 覆盖结果" MODIFIED="1758012694111" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend" />
+    <SUITE FILE_PATH="coverage/face_clock_system$app.coverage" NAME="app 覆盖结果" MODIFIED="1758247110264" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend" />
   </component>
 </project>
