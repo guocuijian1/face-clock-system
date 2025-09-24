@@ -17,12 +17,14 @@ node_modules/
 dist/
 frontend/.angular/
 frontend/.vscode/
+package-lock.json
 
 # Logs
 *.log
 
 # IDE
 .vscode/
+.idea/
 
 # Test/Debug
 backend/debug_images/

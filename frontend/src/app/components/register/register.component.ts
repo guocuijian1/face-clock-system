@@ -42,6 +42,10 @@ export default class RegisterComponent implements OnDestroy {
     this.imageDataSub?.unsubscribe();
   }
 
+  get isSubmitDisabled(): boolean {
+    return !this.registerImageData || !this.name || !this.job_id;
+  }
+
   async onSubmitRegisterForm(e: Event): Promise<void> {
     e.preventDefault();
     const formData = new FormData();
@@ -70,7 +74,8 @@ export default class RegisterComponent implements OnDestroy {
           type:ResponseMessageTypeEnum.Error,
           content:'图片base64解码失败'
         }
-        console.log(err.error.message);
+        console.log(err.message);
+        return;
       }
     }
 

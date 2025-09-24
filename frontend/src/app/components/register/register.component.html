@@ -9,23 +9,13 @@
       <div>
         <label for="registerName" class="label">姓名:</label>
         <input type="text" id="registerName" name="name" required [(ngModel)]="name" #nameRef="ngModel">
-        @if (nameRef.invalid && (nameRef.dirty || nameRef.touched)) {
-          <div class="error">
-            姓名为必填项
-          </div>
-        }
       </div>
 
       <div>
         <label for="registerJobId" class="label">工号:</label>
         <input type="text" id="registerJobId" name="job_id" required [(ngModel)]="job_id" #jobIdRef="ngModel">
-        @if (jobIdRef.invalid && (jobIdRef.dirty || jobIdRef.touched)) {
-          <div class="error">
-            工号为必填项
-          </div>
-        }
       </div>
-      <button type="submit" [disabled]="registerForm['form'].invalid">注册</button>
+      <button type="submit" [disabled]="isSubmitDisabled">注册</button>
       <button type="button" (click)="clearForm(); $event.preventDefault();">清除</button>
     </div>
   </form>
