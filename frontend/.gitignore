@@ -1,3 +1,10 @@
 # Ignore Cypress reports directory
 cypress/reports/
 cypress/screenshots/
+
+# .nycrc
+.nycrc
+.nyc_output
+
+# Coverage output
+coverage/

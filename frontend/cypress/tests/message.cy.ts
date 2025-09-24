@@ -1,5 +1,5 @@
-import { MessageComponent } from '../src/app/components/message/message.component';
-import { ResponseMessageTypeEnum } from '../src/app/enums/response-message-type.enum';
+import { MessageComponent } from '../../src/app/components/message/message.component';
+import { ResponseMessageTypeEnum } from '../../src/app/enums/response-message-type.enum';
 import { mount } from 'cypress/angular';
 
 describe('ErrorMessageComponent', () => {
