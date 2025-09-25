@@ -16,7 +16,7 @@ describe('RegisterComponent', () => {
 
   it('注册成功时显示成功消息', () => {
     RestService.interceptCroppedFaces(200,'Successfully detected and cropped face',VideoCapturePage.mockCorrectImageData);
-    let registerResponse = RestService.interceptRegister(200,'注册成功');
+    RestService.interceptRegister(200,'注册成功');
     registerPage.mountComponent()
       .then(({fixture}) => {
         fixture.detectChanges();
@@ -31,7 +31,7 @@ describe('RegisterComponent', () => {
 
   it('注册失败时显示失败消息', () => {
     RestService.interceptCroppedFaces(200,'Successfully detected and cropped face',VideoCapturePage.mockCorrectImageData);
-    let registerResponse = RestService.interceptRegister(400,'注册失败');
+    RestService.interceptRegister(400,'注册失败');
 
     registerPage.mountComponent().then(({fixture}) => {
       fixture.detectChanges();

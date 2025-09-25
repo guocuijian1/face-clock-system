@@ -1,6 +1,6 @@
 <div id="captureContainer" class="capture-container">
   <div class="camera-container" id="cameraContainer" #cameraContainer>
-    <button type="button" class="close-btn" (click)="onClose()" aria-label="关闭">×</button>
+    <button test-id="video-close-button" type="button" class="close-btn" (click)="onClose()" aria-label="关闭">×</button>
     <div class="ellipse-clip video-size match-parent" style="position:relative;">
       <video id="video" #video autoplay muted playsinline [ngClass]="(imageData$ | async) ? 'video-hidden' : 'video-active'"></video>
       <img id="image" #image [ngClass]="(imageData$ | async) ? 'image-active video-size' : 'image-hidden'" [src]="(imageData$ | async) || ''" alt="人脸照片"/>

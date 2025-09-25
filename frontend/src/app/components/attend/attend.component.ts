@@ -81,4 +81,8 @@ export default class AttendComponent implements OnDestroy {
     this.store.dispatch(clearImageData());
     this.responseMessage = null;
   }
+
+  get isSubmitDisabled(): boolean {
+    return !this.registeredImageData;
+  }
 }

@@ -1,3 +1,5 @@
+import 'cypress-real-events/support';
+
 /// <reference types="cypress" />
 // ***********************************************
 // This example commands.ts shows you how to

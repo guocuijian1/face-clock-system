@@ -36,7 +36,7 @@ export class VideoCaptureComponent implements AfterViewInit, OnDestroy {
     this.imageDataSubscription = this.imageData$.subscribe(imageData => {
       console.log('imageData updated:', imageData);
       if (!imageData?.trim() && this.video) {
-        this.handleCaptureClick().then();
+        this.startCameraAndCaptureImage().then();
       }
     });
   }
@@ -106,7 +106,7 @@ export class VideoCaptureComponent implements AfterViewInit, OnDestroy {
   }
 
 
-  async handleCaptureClick(): Promise<void> {
+  async startCameraAndCaptureImage(): Promise<void> {
     await this.startCamera();
     await this.showCountDownAnimation();
     await this.captureImage();
@@ -130,14 +130,14 @@ export class VideoCaptureComponent implements AfterViewInit, OnDestroy {
       if (imageData?.trim()) {
         this.store.dispatch(clearImageData());
       } else {
-        this.handleCaptureClick().then();
+        this.startCameraAndCaptureImage().then();
       }
     })
   }
 
   ngAfterViewInit(): void {
     if (this.video) {
-      this.handleCaptureClick().then();
+      this.startCameraAndCaptureImage().then();
     }
   }
 

@@ -7,6 +7,7 @@ describe('AttendComponent', () => {
   it('when no face is detected,the disable attend button', () => {
     RestService.interceptCroppedFaces(400,'Error occurred',VideoCapturePage.mockWrongImageData);
     attendPage.mountComponent().then(() => {
+      attendPage.getTitle().should('have.text', '考勤');
       attendPage.getAttendButton().should('be.disabled');
     })
   });
@@ -15,6 +16,7 @@ describe('AttendComponent', () => {
     RestService.interceptCroppedFaces(200,'Success',VideoCapturePage.mockWrongImageData);
 
     attendPage.mountComponent().then(() => {
+      attendPage.getTitle().should('have.text', '考勤');
       attendPage.getAttendButton().should('be.enabled');
     });
   });

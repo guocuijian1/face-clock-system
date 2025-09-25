@@ -12,9 +12,14 @@
     "isolatedModules": true,
     "experimentalDecorators": true,
     "importHelpers": true,
+    "types": ["cypress", "cypress-real-events"],
     "target": "ES2022",
     "module": "preserve"
   },
+  "include": [
+    "**/*.ts",
+    "**/*.d.ts"
+  ],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
@@ -22,7 +27,6 @@
     "typeCheckHostBindings": true,
     "strictTemplates": true
   },
-  "files": [],
   "references": [
     {
       "path": "./tsconfig.app.json"
