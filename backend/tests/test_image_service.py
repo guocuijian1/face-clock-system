@@ -16,7 +16,7 @@ class TestImageService(unittest.TestCase):
     def test_get_face_locations(self):
         # Get the absolute path to the test image
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        image_path = f"{current_dir}/resources/man.jpg"
+        image_path = f"{current_dir}/resources/man.png"
 
         # Read and convert image to base64
         with open(image_path, 'rb') as image_file:
