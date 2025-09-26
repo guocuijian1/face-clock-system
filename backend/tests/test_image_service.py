@@ -29,7 +29,8 @@ class TestImageService(unittest.TestCase):
         # Assertions
         self.assertIsNotNone(face_locations)
         self.assertIsInstance(face_locations, list)
-        self.assertTrue(len(face_locations) > 0, "No faces detected")
+        self.assertGreater(len(face_locations), 0, "No faces detected")
+
 
         # Check the structure of face locations
         for face_location in face_locations:
