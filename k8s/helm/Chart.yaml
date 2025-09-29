@@ -1,0 +1,5 @@
+apiVersion: v2
+name: face-clock-system
+version: 0.1.0
+description: Helm chart for face-clock-system backend and frontend
+

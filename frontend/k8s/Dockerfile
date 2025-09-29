@@ -1,0 +1,12 @@
+FROM node:20 AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build -- --output-path=dist/app
+FROM nginx:alpine
+COPY --from=build /app/dist/app /usr/share/nginx/html
+COPY k8s/nginx.conf /etc/nginx/conf.d/default.conf
+RUN mkdir -p /var/cache/nginx/client_temp /run && chown -R nginx:nginx /usr/share/nginx/html /var/cache/nginx /run
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
