@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: milvus-database
+  labels:
+    app: milvus-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: milvus-pod
+  template:
+    metadata:
+      labels:
+        app: milvus-pod
+    spec:
+      automountServiceAccountToken: {{ .Values.automountServiceAccountToken }}
+      containers:
+        - name: milvus-standalone
+          image: {{ .Values.database.image.repository }}:{{ .Values.database.image.tag }}
+          command: ["milvus", "run", "standalone"]
+          env:
+            - name: ETCD_USE_EMBED
+              value: "true"
+            - name: ETCD_DATA_DIR
+              value: "/var/lib/milvus/etcd"
+            - name: ETCD_CONFIG_PATH
+              value: "/milvus/configs/embedEtcd.yaml"
+            - name: COMMON_STORAGETYPE
+              value: "local"
+            - name: DEPLOY_MODE
+              value: "STANDALONE"
+          ports:
+            - containerPort: 19530
+            - containerPort: 9091
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+              ephemeral-storage: "5Gi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+              ephemeral-storage: "10Gi"
+          volumeMounts:
+            - name: embed-etcd
+              mountPath: /milvus/configs/embedEtcd.yaml
+              subPath: embedEtcd.yaml
+            - name: user-config
+              mountPath: /milvus/configs/user.yaml
+              subPath: user.yaml
+      volumes:
+        - name: embed-etcd
+          configMap:
+            name: embed-etcd-config
+        - name: user-config
+          configMap:
+            name: user-config
+      securityContext:
+        seccompProfile:
+          type: Unconfined

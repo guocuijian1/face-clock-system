@@ -1,7 +1,7 @@
 import base64
 
 from flask import Flask, request, jsonify
-from face_attendance_system import register_face, attendance
+from face_attendance_manager import FaceAttendanceManager
 from image_service import ImageService
 import os
 import tempfile
@@ -11,11 +11,9 @@ from response_model import ResponseModel
 
 app = Flask(__name__)
 CORS(app)
-image_service = ImageService()
 
 def make_response(status: int, message: str, data=None) -> ResponseModel:
     return ResponseModel(status=status, message=message, data=data)
-
 
 @app.route('/register', methods=['POST'])
 def api_register():
@@ -34,7 +32,7 @@ def api_register():
         resp = make_response(400, 'Missing image file', None)
         return jsonify(resp.__dict__), resp.status
     try:
-        result = register_face(tmp_path, name, job_id, tmp_path)
+        result = FaceAttendanceManager.register_face(tmp_path, name, job_id)
         return jsonify(result.__dict__), result.status
     finally:
         if tmp_path and os.path.exists(tmp_path):
@@ -53,14 +51,14 @@ def api_attend():
             with tempfile.NamedTemporaryFile(delete=False, suffix='.png') as tmp:
                 tmp.write(image_data)
                 tmp_path = tmp.name
-            result = attendance(tmp_path)
+            result = FaceAttendanceManager.attendance(tmp_path)
             os.remove(tmp_path)
             return jsonify(result.__dict__), result.status
         except Exception as e:
             resp = make_response(400, f'Invalid base64 image: {str(e)}', None)
             return jsonify(resp.__dict__), resp.status
     else:
-        result = attendance(image_path)
+        result = FaceAttendanceManager.attendance(image_path)
         return jsonify(result.__dict__), result.status
 
 @app.route('/cropped_faces', methods=['POST'])

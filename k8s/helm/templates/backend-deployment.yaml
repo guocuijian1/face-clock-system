@@ -12,9 +12,37 @@ spec:
       labels:
         app: backend
     spec:
+      automountServiceAccountToken: {{ .Values.automountServiceAccountToken }}
       containers:
         - name: backend
           image: {{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}
           ports:
             - containerPort: 5000
-
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+              ephemeral-storage: "5Gi"
+            limits:
+              memory: "512Mi"
+              ephemeral-storage: "10Gi"
+          volumeMounts:
+            - name: backend-storage
+              mountPath: /data
+      volumes:
+        - name: backend-storage
+          persistentVolumeClaim:
+            claimName: backend-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: backend-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+    limits:
+      storage: 10Gi

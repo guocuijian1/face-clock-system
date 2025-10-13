@@ -68,6 +68,7 @@ export class VideoCaptureComponent implements AfterViewInit, OnDestroy {
         let mediaStream = video.srcObject as MediaStream | null;
         mediaStream?.getTracks().forEach(track => track.stop());
         video.srcObject = null;
+        this.responseMessage = null;
       } else {
         console.error('后端返回异常:', response);
         this.responseMessage = {

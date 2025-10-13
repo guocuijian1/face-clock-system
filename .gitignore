@@ -33,6 +33,8 @@ backend/tests/__pycache__/
 backend/tests/test_detected_faces/
 backend/backend
 
+k8s/volumes/
+
 # Misc
 *.swp
 *.bak

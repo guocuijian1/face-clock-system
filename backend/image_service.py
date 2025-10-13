@@ -9,48 +9,6 @@ class ImageService:
         self.images_meta = []
         self.current_index = -1
 
-    def load_images(self):
-        if not os.path.exists(self.db_path):
-            raise FileNotFoundError(f"Database file {self.db_path} not found.")
-
-        with open(self.db_path, 'rb') as f:
-            db = pickle.load(f)
-
-        # Ensure all required keys exist in the database
-        required_keys = ['names', 'job_ids', 'vectors']
-        for key in required_keys:
-            if key not in db:
-                raise KeyError(f"Missing key '{key}' in the database.")
-
-        # Validate that all lists have the same length
-        if not (len(db['names']) == len(db['job_ids']) == len(db['vectors'])):
-            raise ValueError("Inconsistent data lengths in the database.")
-
-        self.images_meta = [
-            {
-                'index': idx,
-                'name': name,
-                'job_id': job_id,
-                'image_binary': self.load_image_from_local(image_url)
-            }
-            for idx, (name, job_id, image_url) in enumerate(zip(db['names'], db['job_ids'], db['image_urls']))
-        ]
-        self.current_index = 0 if self.images_meta else -1
-
-    @staticmethod
-    def load_image_from_local(image_url):
-        if not image_url or not os.path.exists(image_url):
-            return None
-
-        try:
-            with open(image_url, 'rb') as img_file:
-                img_bytes = img_file.read()
-                img_base64 = base64.b64encode(img_bytes).decode('utf-8')
-                return img_base64
-        except Exception as e:
-            print(f"Error loading image from {image_url}: {e}")
-            return None
-
     @staticmethod
     def get_face_locations(base64_string):
         """

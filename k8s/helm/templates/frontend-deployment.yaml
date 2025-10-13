@@ -12,9 +12,16 @@ spec:
       labels:
         app: frontend
     spec:
+      automountServiceAccountToken: {{ .Values.automountServiceAccountToken }}
       containers:
         - name: frontend
           image: {{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}
           ports:
-            - containerPort: 80
-
+            - containerPort: 4200
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+              ephemeral-storage: "512Mi"
+            limits:
+              memory: "256Mi"

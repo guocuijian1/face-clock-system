@@ -1,4 +1,3 @@
-# backend/response_model.py
 from dataclasses import dataclass
 from typing import Any, Optional
 

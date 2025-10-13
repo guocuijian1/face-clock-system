@@ -7,12 +7,12 @@ RUN rm -rf /etc/apt/sources.list.d/* && \
     apt-get install -y --fix-missing \
         build-essential \
         cmake \
-        libgtk-3-dev \
         libboost-all-dev \
+        libgtk-3-dev \
         openssh-server \
         vim && \
     apt-get clean && \
-    apt --fix-broken install && \
+    apt --fix-broken install -y && \
     rm -rf /var/lib/apt/lists/* && \
     mkdir -p /var/run/sshd
 

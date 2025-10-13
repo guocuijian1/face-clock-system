@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "rm-reports": "rm -rf cypress/reports",
-    "cy:run-ct": "npx cypress run --component",
+    "cy:run-ct": "npx cypress run --component --headed --browser chrome",
     "cy:report:merge": "npx mochawesome-merge cypress/reports/*.json > cypress/reports/report.json",
     "cy:report:html": "npx marge cypress/reports/report.json -f report -o cypress/reports",
     "cy:report:all": "npm run cy:report:merge && npm run cy:report:html",

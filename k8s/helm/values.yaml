@@ -12,5 +12,14 @@ frontend:
     tag: v1
   service:
     type: NodePort
-    port: 80
-    nodePort: 30080
+    port: 4200
+    nodePort: 4200
+database:
+  image:
+    repository: milvusdb/milvus
+    tag: v2.6.3
+  service:
+    type: ClusterIP
+    port1: 19530
+    port2: 9091
+automountServiceAccountToken: false

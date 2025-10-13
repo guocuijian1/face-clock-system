@@ -13,7 +13,7 @@ describe('AttendComponent', () => {
   });
 
   it('when faces is detected, then enable attend button', () => {
-    RestService.interceptCroppedFaces(200,'Success',VideoCapturePage.mockWrongImageData);
+    RestService.interceptCroppedFaces(200,'Success',VideoCapturePage.mockCorrectImageData);
 
     attendPage.mountComponent().then(() => {
       attendPage.getTitle().should('have.text', '考勤');

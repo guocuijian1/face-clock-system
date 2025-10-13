@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: embed-etcd-config
+data:
+  embedEtcd.yaml: |
+    listen-client-urls: http://0.0.0.0:2379
+    advertise-client-urls: http://0.0.0.0:2379
+    quota-backend-bytes: 4294967296
+    auto-compaction-mode: revision
+    auto-compaction-retention: '1000'
