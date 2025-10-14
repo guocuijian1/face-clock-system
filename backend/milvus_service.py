@@ -3,7 +3,7 @@ from pymilvus import connections, FieldSchema, CollectionSchema, DataType, Colle
 class FaceDatabaseService:
     _instance = None
     @classmethod
-    def get_instance(cls, host='localhost', port='19530'):
+    def get_instance(cls, host='milvus-database', port='19530'):
         if cls._instance is None:
             cls._instance = cls(host,port)
         return cls._instance

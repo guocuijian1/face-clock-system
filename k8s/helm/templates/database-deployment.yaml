@@ -8,11 +8,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: milvus-pod
+      app: milvus-database
   template:
     metadata:
       labels:
-        app: milvus-pod
+        app: milvus-database
     spec:
       automountServiceAccountToken: {{ .Values.automountServiceAccountToken }}
       containers:

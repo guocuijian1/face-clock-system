@@ -1,5 +1,3 @@
-from importlib.metadata import metadata
-
 import face_recognition
 from milvus_service import FaceDatabaseService
 import os
@@ -7,7 +5,6 @@ from datetime import datetime
 from response_model import ResponseModel
 
 class FaceAttendanceManager:
-    service = FaceDatabaseService.get_instance()
     ATTENDANCE_CSV = 'backend/attendance.csv'
     @classmethod
     def extract_face_vector(cls, image_path):
@@ -23,9 +20,8 @@ class FaceAttendanceManager:
         face_vector = cls.extract_face_vector(image_path)
         if not face_vector:
             return ResponseModel(status=400, message='没有检测到人脸', data=None)
-        # Ensure index exists before saving
-        cls.service.ensure_index_exists()
-        success, msg = cls.service.save_face_image(face_vector, name, job_id)
+        service = FaceDatabaseService.get_instance()
+        success, msg = service.save_face_image(face_vector, name, job_id)
         formatted_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         if success:
             print({'message': f'注册成功: {name}({job_id}) {formatted_time}'})
@@ -36,7 +32,8 @@ class FaceAttendanceManager:
     @classmethod
     def attendance(cls,image_path) -> ResponseModel:
         face_vector = cls.extract_face_vector(image_path)
-        results, _msg = cls.service.query_face_by_image(face_vector, top_k=1)
+        service = FaceDatabaseService.get_instance()
+        results, _msg = service.query_face_by_image(face_vector, top_k=1)
         if not results or 'ids' not in results[0]:
             return ResponseModel(status=404, message='人脸未注册，请注册后再考勤', data=None)
         idx = 0

@@ -13,7 +13,7 @@ frontend:
   service:
     type: NodePort
     port: 4200
-    nodePort: 4200
+    nodePort: 30420
 database:
   image:
     repository: milvusdb/milvus

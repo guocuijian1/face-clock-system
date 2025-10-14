@@ -17,7 +17,7 @@ spec:
         - name: frontend
           image: {{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}
           ports:
-            - containerPort: 4200
+            - containerPort: 80
           resources:
             requests:
               cpu: "100m"
