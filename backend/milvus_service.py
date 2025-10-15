@@ -1,16 +1,19 @@
+import os
 from pymilvus import connections, FieldSchema, CollectionSchema, DataType, Collection, utility
-import sys
 
 class FaceDatabaseService:
     _instance = None
+
     @classmethod
-    def get_instance(cls, host='milvus-database', port='19530'):
+    def get_instance(cls):
         if cls._instance is None:
-            cls._instance = cls(host,port)
+            cls._instance = cls()
         return cls._instance
 
-    def __init__(self, host='localhost', port='19530'):
-        connections.connect(host=host, port=port)
+    def __init__(self):
+        milvus_host = os.environ.get('MILVUS_HOST', 'milvus-database')
+        milvus_port = os.environ.get('MILVUS_PORT', '19530')
+        connections.connect(host=milvus_host, port=milvus_port)
         self.collection_name = 'face_collection'
         self.collection = None
         self._init_collection()

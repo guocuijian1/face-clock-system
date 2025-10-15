@@ -1,0 +1,4 @@
+# Use official Python image for Mac M1/M2 (arm64)
+FROM face-clock-backend:v0
+
+COPY . /root/backend

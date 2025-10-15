@@ -22,7 +22,4 @@ RUN python3.10 -m venv /root/backend/venv && \
     /root/backend/venv/bin/pip install --upgrade pip -i https://pypi.tuna.tsinghua.edu.cn/simple && \
     /root/backend/venv/bin/pip install -r /root/backend/requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
-EXPOSE 22
-EXPOSE 5000
-
 CMD ["/root/backend/venv/bin/python", "/root/backend/app.py"]

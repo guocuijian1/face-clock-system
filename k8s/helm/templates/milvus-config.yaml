@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: milvus-config
+data:
+  MILVUS_HOST: "milvus-database"
+  MILVUS_PORT: "{{ .Values.database.service.port1 }}"

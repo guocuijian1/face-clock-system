@@ -29,6 +29,17 @@ spec:
           volumeMounts:
             - name: backend-storage
               mountPath: /data
+          env:
+            - name: MILVUS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: milvus-config
+                  key: MILVUS_HOST
+            - name: MILVUS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: milvus-config
+                  key: MILVUS_PORT
       volumes:
         - name: backend-storage
           persistentVolumeClaim:

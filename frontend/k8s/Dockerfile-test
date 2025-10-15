@@ -1,7 +1,5 @@
-FROM node:20 AS build
+FROM face-clock-frontend:v0 AS build
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci
 COPY . .
 RUN npm run build -- --output-path=dist/app
 FROM nginx:alpine
