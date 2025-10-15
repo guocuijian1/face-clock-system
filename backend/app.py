@@ -48,7 +48,7 @@ def api_attend():
     if len(image_path) > 100 and all(c.isalnum() or c in '+/=' for c in image_path):
         try:
             image_data = base64.b64decode(image_path)
-            with tempfile.NamedTemporaryFile(delete=False, suffix='.png') as tmp:
+            with tempfile.NamedTemporaryFile(delete=False, suffix='.png',dir='/tmp') as tmp:
                 tmp.write(image_data)
                 tmp_path = tmp.name
             result = FaceAttendanceManager.attendance(tmp_path)

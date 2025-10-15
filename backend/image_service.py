@@ -1,7 +1,8 @@
-import base64, io,os,pickle
+import base64, io,os
 from PIL import Image
 import numpy as np
 import face_recognition
+import sys
 
 class ImageService:
     def __init__(self, db_path='face_vectors.pkl'):
@@ -28,7 +29,7 @@ class ImageService:
 
         debug_image_path = os.path.join(debug_dir, "original_image.png")
         image.save(debug_image_path)
-        print(f"_get_face_locations receive a image and saved to : {debug_image_path}")
+        print(f"_get_face_locations receive a image and saved to : {debug_image_path}", flush=True)
 
         # 缩放
         max_size = 1024
@@ -37,24 +38,24 @@ class ImageService:
             ratio = max_size / max(image.size)
             new_size = tuple(int(dim * ratio) for dim in image.size)
             image = image.resize(new_size, Image.Resampling.LANCZOS)
-            print(f"Resized image to: {image.size}")
+            print(f"Resized image to: {image.size}", flush=True)
 
         # 转为 RGB
         if image.mode != 'RGB':
             image = image.convert('RGB')
 
         rgb_image = np.array(image)
-        print(f"NumPy array shape: {rgb_image.shape}")
+        print(f"NumPy array shape: {rgb_image.shape}", flush=True)
 
         # 检测人脸 - 使用更激进的参数
         face_locations = face_recognition.face_locations(rgb_image, model="hog", number_of_times_to_upsample=2)
-        print(f"Detected {len(face_locations)} faces")
-        print(f"Raw face locations: {face_locations}")
+        print(f"Detected {len(face_locations)} faces", flush=True)
+        print(f"Raw face locations: {face_locations}", flush=True)
 
         # 如果没有检测到人脸，尝试更激进的检测
         if not face_locations:
             face_locations = face_recognition.face_locations(rgb_image, model="hog", number_of_times_to_upsample=3)
-            print(f"Second attempt detected {len(face_locations)} faces")
+            print(f"Second attempt detected {len(face_locations)} faces", flush=True)
 
         # 如果图像被缩放了，需要将坐标映射回原始尺寸
         if max(original_size) > max_size:
@@ -63,7 +64,7 @@ class ImageService:
                 (int(top * scale), int(right * scale), int(bottom * scale), int(left * scale))
                 for (top, right, bottom, left) in face_locations
             ]
-            print(f"Scaled face locations: {face_locations_list}")
+            print(f"Scaled face locations: {face_locations_list}", flush=True)
         else:
             face_locations_list = list(face_locations)
 
@@ -78,7 +79,7 @@ class ImageService:
         :return: 裁剪后的人脸图像的base64编码
         """
         if not face_location:
-            print("No face location provided")
+            print("No face location provided", flush=True)
             return ''
 
         try:
@@ -91,16 +92,16 @@ class ImageService:
                 image = image.convert('RGB')
 
             img_width, img_height = image.size
-            print(f"Original image size: {img_width}x{img_height}")
+            print(f"Original image size: {img_width}x{img_height}", flush=True)
 
             # 解析人脸位置坐标
             top, right, bottom, left = face_location  # 只处理第一个人脸
-            print(f"Processing face: top={top}, right={right}, bottom={bottom}, left={left}")
+            print(f"Processing face: top={top}, right={right}, bottom={bottom}, left={left}", flush=True)
 
             # 计算人脸框的尺寸
             face_width = right - left
             face_height = bottom - top
-            print(f"Face dimensions: {face_width}x{face_height}")
+            print(f"Face dimensions: {face_width}x{face_height}", flush=True)
 
             # 扩展裁剪区域（增加30%的边界）
             scale_ratio = 0.6
@@ -113,7 +114,7 @@ class ImageService:
             crop_right = min(img_width, right + padding_x)
             crop_bottom = min(img_height, bottom + padding_y)
 
-            print(f"Crop coordinates: left={crop_left}, top={crop_top}, right={crop_right}, bottom={crop_bottom}")
+            print(f"Crop coordinates: left={crop_left}, top={crop_top}, right={crop_right}, bottom={crop_bottom}", flush=True)
 
             # 裁剪人脸
             face_image = image.crop((crop_left, crop_top, crop_right, crop_bottom))
@@ -126,10 +127,10 @@ class ImageService:
             buffered = io.BytesIO()
             face_image.save(buffered, format="PNG")
             face_base64 = base64.b64encode(buffered.getvalue()).decode('utf-8')
-            print("Successfully processed face")
+            print("Successfully processed face", flush=True)
 
             return face_base64
 
         except Exception as e:
-            print(f"Error in crop_and_save_faces: {str(e)}")
+            print(f"Error in crop_and_save_faces: {str(e)}", flush=True)
             return ''  # 发生错误时返回空字符串
