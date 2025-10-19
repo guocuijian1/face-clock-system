@@ -18,6 +18,10 @@ spec:
           image: {{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}
           ports:
             - containerPort: 80
+          volumeMounts:
+            - name: frontend-config
+              mountPath: /usr/share/nginx/html/assets/config.json
+              subPath: config.json
           resources:
             requests:
               cpu: "100m"
@@ -25,3 +29,10 @@ spec:
               ephemeral-storage: "512Mi"
             limits:
               memory: "256Mi"
+      volumes:
+        - name: frontend-config
+          configMap:
+            name: frontend-config
+            items:
+              - key: config.json
+                path: config.json

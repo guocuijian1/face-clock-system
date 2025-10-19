@@ -10,4 +10,3 @@ spec:
     - protocol: TCP
       port: {{ .Values.frontend.service.port }}
       targetPort: 80
-      nodePort: {{ .Values.frontend.service.nodePort }}

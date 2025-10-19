@@ -87,6 +87,14 @@ def get_cropped_faces():
         resp = make_response(500, str(e), None)
         return jsonify(resp.__dict__), resp.status
 
+@app.route('/health', methods=['GET'])
+def health_check():
+    try:
+        resp = make_response(200, 'OK', {'service': 'backend', 'status': 'ok'})
+        return jsonify(resp.__dict__), 200
+    except Exception as e:
+        resp = make_response(500, f'Health check error: {str(e)}', None)
+        return jsonify(resp.__dict__), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=5000,debug=True)

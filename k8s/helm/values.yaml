@@ -3,17 +3,22 @@ backend:
     repository: face-clock-backend
     tag: v1
   service:
-    type: NodePort
+    type: ClusterIP
     port: 5000
     nodePort: 30500
+  ingress:
+    proxyBodySize: "50m"
 frontend:
   image:
     repository: face-clock-frontend
     tag: v1
   service:
-    type: NodePort
+    type: ClusterIP
     port: 4200
     nodePort: 30420
+  apiBaseUrl: "https://frontend.local/api"
+  ingress:
+    proxyBodySize: "50m"
 database:
   image:
     repository: milvusdb/milvus
